@@ -1,0 +1,47 @@
+module board_display(CLK,map,row,col);
+	input reset,CLK;
+	input [127:0] State;
+	output reg [7:0] row;
+	output reg [15:0] col;
+	reg [3:0] col_count;
+	always@(posedge CLK)
+	begin
+		col_count <= col_count + 1;
+		case(col_count)
+			4'd0: col <= 16'b1000000000000000;
+			4'd1: col <= 16'b0100000000000000;
+			4'd2: col <= 16'b0010000000000000;
+			4'd3: col <= 16'b0001000000000000;
+			4'd4: col <= 16'b0000100000000000;
+			4'd5: col <= 16'b0000010000000000;
+			4'd6: col <= 16'b0000001000000000;
+			4'd7: col <= 16'b0000000100000000;
+			4'd0: col <= 16'b0000000010000000;
+			4'd1: col <= 16'b0000000001000000;
+			4'd2: col <= 16'b0000000000100000;
+			4'd3: col <= 16'b0000000000010000;
+			4'd4: col <= 16'b0000000000001000;
+			4'd5: col <= 16'b0000000000000100;
+			4'd6: col <= 16'b0000000000000010;
+			4'd7: col <= 16'b0000000000000001;
+		endcase
+		case(col_count)
+			4'd0: row <= !(map[0:7] xor 0);
+			4'd1: row <= !(map[8:15] xor 0);
+			4'd2: row <= !(map[16:23] xor 0);
+			4'd3: row <= !(map[24:31] xor 0);
+			4'd4: row <= !(map[32:39] xor 0);
+			4'd5: row <= !(map[40:47] xor 0);
+			4'd6: row <= !(map[48:55] xor 0);
+			4'd7: row <= !(map[56:63] xor 0);
+			4'd0: row <= !(map[64:71] xor 0);
+			4'd1: row <= !(map[72:79] xor 0);
+			4'd2: row <= !(map[80:87] xor 0);
+			4'd3: row <= !(map[88:95] xor 0);
+			4'd4: row <= !(map[96:103] xor 0);
+			4'd5: row <= !(map[104:111] xor 0);
+			4'd6: row <= !(map[112:119] xor 0);
+			4'd7: row <= !(map[120:127] xor 0);
+		endcase
+	end
+endmodule

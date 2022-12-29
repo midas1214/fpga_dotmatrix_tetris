@@ -1,0 +1,14 @@
+module left_right_move(CLK, left_button, right_button, map, next_block1_x,next_block2_x,next_block3_x,next_block4_x);
+ input CLK;
+ input left_button, right_button;
+ input [127:0] map;
+ output reg [2:0] next_block1_x,next_block2_x,next_block3_x,next_block4_x;//下落方塊的x座標
+ //output reg [2:0] new_next_block1_x,new_next_block2_x,new_next_block3_x,new_next_block4_x;//下落方塊的x座標
+ always@(posedge CLK or negedge left_button)
+ begin
+  new_next_block1_x <= next_block1_x - 1;
+  new_next_block2_x <= next_block2_x - 1;
+  new_next_block3_x <= next_block3_x - 1;
+  new_next_block4_x <= next_block4_x - 1;
+ end
+endmodule 

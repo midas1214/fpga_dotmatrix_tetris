@@ -1,0 +1,25 @@
+module change_position(CLK,placed,next_block1_x,next_block1_y,next_block2_x,next_block2_y,next_block3_x,next_block3_y,next_block4_x,next_block4_y,block1_x,block1_y,block2_x,block2_y,block3_x,block3_y,block4_x,block4_y);
+	input CLK,placed;
+	input [2:0] next_block1_x,next_block2_x,next_block3_x,next_block4_x;//下落方塊的x座標
+	input [3:0] next_block1_y,next_block2_y,next_block3_y,next_block4_y;//下落方塊的y座標
+	output [2:0] block1_x,block2_x,block3_x,block4_x;//生成方塊的x座標
+	output [3:0] block1_y,block2_y,block3_y,block4_y;//生成方塊的y座標
+	always@(posedge CLK or negedge palced)
+	begin
+		if(!placed)
+		begin
+			//block等於生成位置
+		end
+		else
+		begin
+			block1_x = next_block1_x;
+			block2_x = next_block2_x;
+			block3_x = next_block3_x;
+			block4_x = next_block4_x; 
+			block1_y = next_block1_y;
+			block2_y = next_block2_y;
+			block3_y = next_block3_y;
+			block4_y = next_block4_y; 
+		end
+	end
+endmodule

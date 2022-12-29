@@ -1,0 +1,90 @@
+module project(CLK,reset,block1_x,block1_y,block2_x,block2_y,block3_x,block3_y,block4_x,block4_y,placed,out);
+	input CLK;
+	input [0,2] block1_x,block2_x,block3_x,block4_x;//生成方塊的x座標
+	input [0,3] block1_y,block2_y,block3_y,block4_y;//生成方塊的y座標
+	reg [0:127] map;// 0為左上角127為右下角
+	output placed;//判斷是否放置
+	output reg [0:5] row;
+	output [0:6] out;
+	reg stop;
+	wire Second;//每"Second"下降
+	counter c(CLK,Second);
+	always@(posedge Second)
+	begin
+		if(stop == 1)
+		begin
+			//等新方塊
+		end
+		else
+		begin 
+			if( ( (1 << (block1_x + (block1_y + 4'b1) * 8)) & map == 1 ) && ( (1 << (block2_x + (block2_y + 4'b1) * 8)) & map == 1 ) && ( (1 << (block3_x + (block3_y + 4'b1) * 8)) & map == 1 ) && ( (1 << (block4_x + (block4_y + 4'b1) * 8)) & map == 1 ) )
+			begin // 不能下降就停
+				stop = 1;
+			end
+			else
+			begin//能下降就下降
+				block1_y = block1_y + 4'b1; 
+				block2_y = block2_y + 4'b1; 
+				block3_y = block3_y + 4'b1; 
+				block4_y = block4_y + 4'b1; 
+			end
+		end
+	end
+	always@(stop)
+	begin
+		if(stop == 1)
+		begin // 停下來就融入地圖內並回傳
+			map = (1 << (block1_x + (block1_y + 4'b1) * 8)) | map;
+			map = (1 << (block2_x + (block2_y + 4'b1) * 8)) | map;
+			map = (1 << (block3_x + (block3_y + 4'b1) * 8)) | map;
+			map = (1 << (block4_x + (block4_y + 4'b1) * 8)) | map;
+			for(idx = 0;idx < 16;)// 消行判斷
+			begin
+				if(map[120-(8*idx):127-(8*idx)] == 8'b11111111)//如果可消row加一並下降一格
+				begin
+					row = row + 7'b1;
+					reg 
+					for(idx2 = idx;idx2 < 16; idx = idx + 1)
+					begin
+						if(idx2 + 1 == 16)
+							map[120-(8*idx2):127-(8*idx2)] = 8'b00000000;
+						else
+							map[120-(8*idx2):127-(8*idx2)] = map[120-8*(idx2+1):127-8*(idx2+1)];
+					end
+				end
+				else
+				begin//不可消，向上檢查
+					idx = idx + 1;
+				end
+			end
+		end
+		else
+		begin
+		//stop = 0,不做事
+		end
+	end
+	always@(row)
+	begin//消行分數增加
+		case(row)
+		begin
+			5'b00000: out = 7'b1000000;
+			5'b00001: out = 7'b1111001;
+			5'b00010: out = 7'b0100100;
+			5'b00011: out = 7'b0110000;
+			5'b00100: out = 7'b0011001;
+			5'b00101: out = 7'b0010010;
+			5'b00110: out = 7'b0000010;
+			5'b00111: out = 7'b1111000;
+			5'b01000: out = 7'b0000000;
+			5'b01001: out = 7'b0010000;
+			5'b01010: out = 7'b0001000;
+			//5'b01011: out = 7'b0000011;
+			//5'b01100: out = 7'b1000110;
+			//5'b01101: out = 7'b0100001;
+			//5'b01110: out = 7'b0000110;
+			//5'b01111: out = 7'b0001110;
+		default
+			out = 7'b1000000;
+		endcase
+	end
+endmodule 

@@ -1,0 +1,23 @@
+module generate_block(placed,block1_x,block1_y,block2_x,block2_y,block3_x,block3_y,block4_x,block4_y);
+	input placed;
+	output reg [2:0] block1_x,block2_x,block3_x,block4_x;//生成方塊的x座標
+	output reg [3:0] block1_y,block2_y,block3_y,block4_y;//生成方塊的y座標
+	always@(placed)
+	begin
+		if(placed == 1)
+		begin
+			block1_x = 3'd0;
+			block1_y = 4'd0;
+			block2_x = 3'd1;
+			block2_y = 4'd0;
+			block3_x = 3'd2;
+			block3_y = 4'd0;
+			block4_x = 3'd3;
+			block4_y = 4'd0;
+		end
+		else
+		begin
+		//不做事
+		end
+	end
+endmodule

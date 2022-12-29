@@ -1,0 +1,165 @@
+module down_move(Second,block1_x,block1_y,block2_x,block2_y,block3_x,block3_y,block4_x,block4_y,new_block1_x,new_block1_y,new_block2_x,new_block2_y,new_block3_x,new_block3_y,new_block4_x,new_block4_y,placed,out);
+	
+	always@(posedge Second or negedge stop)
+	begin
+		if(!stop)
+		begin
+			if(placed == 0)
+			begin
+				map = (1'b1 << (new_block1_x + (new_block1_y + 4'b1) * 8)) | (1'b1 << (new_block2_x + (new_block2_y + 4'b1) * 8)) | (1'b1 << (new_block3_x + (new_block3_y + 4'b1) * 8)) | (1'b1 << (new_block4_x + (new_block4_y + 4'b1) * 8)) | map;
+				
+				//土法煉鋼
+				if(map[0:7] == 8'b11111111)
+					map[0:7] = 8'b00000000;
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[8:15] == 8'b11111111)
+				begin
+					map[8:15] = map[0:7];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[16:23] == 8'b11111111)
+				begin
+					map[8:23] = map[0:15];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[24:31] == 8'b11111111)
+				begin
+					map[8:31] = map[0:23];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[32:39] == 8'b11111111)
+				begin
+					map[8:39] = map[0:31];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[40:47] == 8'b11111111)
+				begin
+					map[8:47] = map[0:39];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[48:55] == 8'b11111111)
+				begin
+					map[8:55] = map[0:47];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[56:63] == 8'b11111111)
+				begin
+					map[8:63] = map[0:55];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[64:71] == 8'b11111111)
+				begin
+					map[8:71] = map[0:63];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[72:79] == 8'b11111111)
+				begin
+					map[8:79] = map[0:71];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================	
+				if(map[80:87] == 8'b11111111)
+				begin
+					map[8:87] = map[0:79];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[88:95] == 8'b11111111)
+				begin
+					map[8:95] = map[0:87];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[96:103] == 8'b11111111)
+				begin
+					map[8:103] = map[0:95];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[104:111] == 8'b11111111)
+				begin
+					map[8:111] = map[0:103];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[112:119] == 8'b11111111)
+				begin
+					map[8:119] = map[0:111];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+				//===================================
+				if(map[120:127] == 8'b11111111)
+				begin
+					map[8:127] = map[0:119];
+					map[0:7] = 8'b00000000;
+				end
+				else
+					map[0:7] = map[0:7];
+			end
+			else
+			begin
+				new_block1_x = block1_x;
+				new_block2_x = block2_x;
+				new_block3_x = block3_x;
+				new_block4_x = block4_x;
+				new_block1_y = block1_y;
+				new_block2_y = block2_y;
+				new_block3_y = block3_y;
+				new_block4_y = block4_y;
+				stop = 0;
+			end
+		end
+		else
+		begin 
+			if( ( (1'b1 << (new_block1_x + (new_block1_y + 4'b1) * 8)) & map != 0 ) && ( (1'b1 << (new_block2_x + (new_block2_y + 4'b1) * 8)) & map != 0 ) && ( (1'b1 << (new_block3_x + (new_block3_y + 4'b1) * 8)) & map != 0 ) && ( (1'b1 << (new_block4_x + (new_block4_y + 4'b1) * 8)) & map != 0 ) )
+			begin // 不能下降就停
+				stop = 1;
+			end
+			else
+			begin//能下降就下降
+				new_block1_y = new_block1_y + 4'b1; 
+				new_block2_y = new_block2_y + 4'b1; 
+				new_block3_y = new_block3_y + 4'b1; 
+				new_block4_y = new_block4_y + 4'b1; 
+			end
+		end
+	end
+endmodule
